@@ -1,27 +1,29 @@
 import { URL } from 'node:url';
 
-function generateEcbUrl(currency, baseCurrency, date) {
+function generateEcbUrl(currency: string, baseCurrency: string, date: Date) {
   const host = 'https://data-api.ecb.europa.eu';
   const dataflow = 'EXR';
   const resource = `D.${currency}.${baseCurrency}.SP00.A`;
 
-  const url = new URL(`${host}/service/data/${dataflow}/${resource}`);
+  const [ isoDateString ] = date.toISOString().split('T');
+
+  const url = new URL(`/service/data/${dataflow}/${resource}`, host);
 
   url.searchParams.set('format', 'jsondata');
-  url.searchParams.set('startPeriod', date);
-  url.searchParams.set('endPeriod', date);
+  url.searchParams.set('startPeriod', isoDateString);
+  url.searchParams.set('endPeriod', isoDateString);
   url.searchParams.set('detail', 'dataonly');
 
   return url;
 }
 
-async function fetchFromEcb(currency, baseCurrency, date) {
+async function fetchFromEcb(currency: string, baseCurrency: string, date: Date) {
   const url = generateEcbUrl(currency, baseCurrency, date);
 
   return fetch(url);
 }
 
-async function quoteUsdExchangeRate(date) {
+async function quoteUsdExchangeRate(date: Date) {
   const response = await fetchFromEcb('USD', 'EUR', date);
 
   if (!response.ok) {
@@ -38,8 +40,8 @@ async function quoteUsdExchangeRate(date) {
 }
 
 async function main() {
-  const date = '2024-02-16';
-  const usdExchangeRate = await quoteUsdExchangeRate('2024-02-16');
+  const date = new Date('2024-02-16');
+  const usdExchangeRate = await quoteUsdExchangeRate(date);
 
   console.log(usdExchangeRate);
 }
