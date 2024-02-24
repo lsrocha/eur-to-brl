@@ -1,13 +1,13 @@
 import { URL } from 'node:url';
 
-function generateEcbUrl(currency: string, baseCurrency: string, date: Date) {
-  const host = 'https://data-api.ecb.europa.eu';
+function generateEcbUrl(currency: string, baseCurrency: string, date: Date): URL {
+  const host = 'https://data-api.ecb.europa.eu/';
   const dataflow = 'EXR';
   const resource = `D.${currency}.${baseCurrency}.SP00.A`;
 
   const [ isoDateString ] = date.toISOString().split('T');
 
-  const url = new URL(`/service/data/${dataflow}/${resource}`, host);
+  const url = new URL(`service/data/${dataflow}/${resource}`, host);
 
   url.searchParams.set('format', 'jsondata');
   url.searchParams.set('startPeriod', isoDateString);
@@ -21,6 +21,45 @@ async function fetchFromEcb(currency: string, baseCurrency: string, date: Date) 
   const url = generateEcbUrl(currency, baseCurrency, date);
 
   return fetch(url);
+}
+
+function generateBcbUrl(date: Date): URL {
+  const host = 'https://olinda.bcb.gov.br/olinda/service/PTAX/version/v1/odata/';
+
+  const formattedDate = date.toLocaleDateString('en-US', {
+    timeZone: 'UTC'
+  }).replace(/\//g, '-');
+
+  const url = new URL('DollarRateDate(dataCotacao=@dataCotacao)', host);
+
+  url.searchParams.set('@dataCotacao', `'${formattedDate}'`);
+  url.searchParams.set('$format', 'json');
+  url.searchParams.set('$select', 'cotacaoCompra');
+  url.searchParams.set('$top', '1');
+  
+  return url;
+}
+
+async function fetchFromBcb(date: Date) {
+  const url = generateBcbUrl(date);
+
+  return fetch(url);
+}
+
+async function quoteBrlExchangeRate(date: Date) {
+  const response = await fetchFromBcb(date);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch exchange rate');
+  }
+
+  const data = await response.json();
+
+  if (!data?.value) {
+    return null;
+  }
+
+  return data.value[0].cotacaoCompra;
 }
 
 async function quoteUsdExchangeRate(date: Date) {
@@ -119,12 +158,20 @@ function getLastBusinessDay(date: Date): Date {
   return businessDate;
 }
 
+async function convertFromEurToBrl(amount: number, date: Date): Promise<number> {
+  const businessDate = getLastBusinessDay(date);
+  
+  const [usdExchangeRate, brlExchangeRate] = await Promise.all([
+    quoteUsdExchangeRate(date),
+    quoteBrlExchangeRate(businessDate)
+  ]);
+
+  return amount * usdExchangeRate * brlExchangeRate;
+}
+
 async function main() {
   const date = new Date('2023-12-11');
-  const usdExchangeRate = await quoteUsdExchangeRate(date);
-
-  console.log(usdExchangeRate);
-  console.log(getLastBusinessDay(date));
+  console.log(await convertFromEurToBrl(100, date));
 }
 
 main().catch((err) => console.error(err));
