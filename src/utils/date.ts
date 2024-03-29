@@ -1,4 +1,4 @@
-import brazilianHolidays from "./brazilian-public-holidays.js";
+import { brazilianHolidays } from "./public-holidays.js";
 
 export function formatIsoDate(date: Date): string {
   const [isoDateString] = date.toISOString().split("T");

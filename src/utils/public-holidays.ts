@@ -1,9 +1,7 @@
 /**
  * @see https://www.anbima.com.br/feriados/feriados.asp
- *
- * @type {{ fixed: string[]; [key: number]: string[]; }}
  */
-export default {
+export const brazilianHolidays: { fixed: string[]; [key: number]: string[] } = {
   fixed: [
     "1-1", // Confraternização Universal
     "4-21", // Tiradentes

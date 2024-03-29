@@ -1,28 +1,29 @@
-import { quoteUsdToBrlExchangeRate } from "./clients/brazilian-central-bank/client.js";
-import { quoteFromEuropeanCentralBank } from "./clients/european-central-bank/client.js";
-import { getLastBusinessDayOfPreviousMonthFirstHalf } from "./utils/date.js";
+import { parse } from "csv-parse";
+import { createReadStream, createWriteStream } from "node:fs";
+import { pipeline } from "node:stream/promises";
+import { IncomeTaxReportTransformer } from "./report/stream-transformer.js";
+import { formatIncomeReportEntry } from "./report/formatters.js";
 
-async function convertFromEurToBrl(
-  amount: number,
-  date: Date
-): Promise<number> {
-  const businessDate = getLastBusinessDayOfPreviousMonthFirstHalf(date);
-
-  const [usdExchangeRate, brlExchangeRate] = await Promise.all([
-    quoteFromEuropeanCentralBank({
-      baseCurrency: "EUR",
-      targetCurrency: "USD",
-      date,
-    }),
-    quoteUsdToBrlExchangeRate(businessDate),
-  ]);
-
-  return amount * usdExchangeRate * brlExchangeRate;
-}
+const CSV_SEPARATOR = ";";
 
 async function main() {
-  const date = new Date("2023-12-11");
-  console.log(await convertFromEurToBrl(100, date));
+  const csvParser = parse({
+    cast: true,
+    castDate: true,
+    delimiter: CSV_SEPARATOR,
+    skipEmptyLines: true,
+    toLine: 1000,
+  });
+
+  await pipeline(
+    createReadStream("./rendimentos.csv"),
+    csvParser,
+    new IncomeTaxReportTransformer({
+      separator: CSV_SEPARATOR,
+      formatter: formatIncomeReportEntry,
+    }),
+    createWriteStream("./rendimentos-carne-leao.csv")
+  );
 }
 
 main().catch((err) => console.error(err));
