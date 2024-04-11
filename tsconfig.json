@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/node20",
   "compilerOptions": {
-    "allowJs": true,
     "outDir": "./dist"
   }
 }

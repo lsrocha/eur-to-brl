@@ -1,29 +1,39 @@
-import { parse } from "csv-parse";
-import { createReadStream, createWriteStream } from "node:fs";
-import { pipeline } from "node:stream/promises";
-import { IncomeTaxReportTransformer } from "./report/stream-transformer.js";
-import { formatIncomeReportEntry } from "./report/formatters.js";
-
-const CSV_SEPARATOR = ";";
+import { parseArgs } from "node:util";
+import {
+  REPORT_TYPES,
+  type ReportType,
+  generateIncomeTaxReport,
+} from "./report/report-generator.js";
 
 async function main() {
-  const csvParser = parse({
-    cast: true,
-    castDate: true,
-    delimiter: CSV_SEPARATOR,
-    skipEmptyLines: true,
-    toLine: 1000,
+  const { values: args, positionals } = parseArgs({
+    options: {
+      input: {
+        short: "i",
+        type: "string",
+      },
+      output: {
+        short: "o",
+        type: "string",
+      },
+      reportType: {
+        default: "income",
+        short: "t",
+        type: "string",
+      },
+    },
   });
 
-  await pipeline(
-    createReadStream("./rendimentos.csv"),
-    csvParser,
-    new IncomeTaxReportTransformer({
-      separator: CSV_SEPARATOR,
-      formatter: formatIncomeReportEntry,
-    }),
-    createWriteStream("./rendimentos-carne-leao.csv")
-  );
+  if (!args.input) {
+    throw new Error("-i, --input argument missing");
+  }
+
+  const reportType: ReportType =
+    args.reportType && REPORT_TYPES.includes(args.reportType)
+      ? args.reportType
+      : REPORT_TYPES[0];
+
+  await generateIncomeTaxReport(reportType, args.input, args.output);
 }
 
 main().catch((err) => console.error(err));
