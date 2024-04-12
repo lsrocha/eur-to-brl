@@ -7,10 +7,7 @@ import {
   formatIncomeReportEntry,
   formatPaymentReportEntry,
 } from "./formatters.js";
-
-const CSV_SEPARATOR = ";";
-
-export const REPORT_TYPES = ["income", "payment"];
+import { REPORT_SEPARATOR, REPORT_TYPES } from "./constants.js";
 
 export type ReportType = (typeof REPORT_TYPES)[number];
 
@@ -22,7 +19,7 @@ export async function generateIncomeTaxReport(
   const csvParser = parse({
     cast: true,
     castDate: true,
-    delimiter: CSV_SEPARATOR,
+    delimiter: REPORT_SEPARATOR,
     skipEmptyLines: true,
     toLine: 1000,
   });
@@ -36,7 +33,7 @@ export async function generateIncomeTaxReport(
     createReadStream(inputFile),
     csvParser,
     new IncomeTaxReportTransformer({
-      separator: CSV_SEPARATOR,
+      separator: REPORT_SEPARATOR,
       formatter: reportFormatterPerType[reportType],
     }),
     createWriteStream(outputFile ?? `${reportType}-${Date.now()}.csv`)
