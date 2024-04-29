@@ -14,6 +14,7 @@ export function formatAmount(amount: number) {
   return amount.toLocaleString(REPORT_LOCALE, {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
+    useGrouping: false,
   });
 }
 

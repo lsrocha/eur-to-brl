@@ -38,6 +38,6 @@ export class IncomeTaxReportTransformer extends Transform {
       amounts: convertedAmounts,
     });
 
-    done(null, reportFields.join(this.csvSeparator));
+    done(null, `${reportFields.join(this.csvSeparator)}\n`);
   }
 }
