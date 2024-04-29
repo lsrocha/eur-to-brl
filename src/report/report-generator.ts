@@ -18,7 +18,6 @@ export async function generateIncomeTaxReport(
 ) {
   const csvParser = parse({
     cast: true,
-    castDate: true,
     delimiter: REPORT_SEPARATOR,
     skipEmptyLines: true,
     toLine: 1000,

@@ -20,11 +20,12 @@ export class IncomeTaxReportTransformer extends Transform {
   }
 
   async _transform(
-    entry: [Date, string, ...number[]],
+    entry: [string, string, ...number[]],
     _: BufferEncoding,
     done: TransformCallback
   ): Promise<void> {
-    const [date, description, ...amountFields] = entry;
+    const [dateString, description, ...amountFields] = entry;
+    const date = new Date(dateString);
 
     const convertedAmounts = await Promise.all(
       amountFields.map(
