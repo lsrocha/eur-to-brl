@@ -13,6 +13,12 @@ export const brazilianHolidays: { fixed: string[]; [key: number]: string[] } = {
     "11-20", // Consciência Negra
     "12-25", // Natal
   ],
+  2022: [
+    "2-28", // Carnaval
+    "3-1", // Carnaval
+    "4-15", // Paixão de Cristo
+    "6-16", // Corpus Christi
+  ],
   2023: [
     "2-20", // Carnaval
     "2-21", // Carnaval
