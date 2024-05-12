@@ -2,7 +2,7 @@ import { parse } from "csv-parse";
 import { createReadStream, createWriteStream } from "node:fs";
 import { pipeline } from "node:stream/promises";
 
-import { IncomeTaxReportTransformer } from "./stream-transformer.js";
+import { formatIncomeTaxReport } from "./stream-transformer.js";
 import {
   formatIncomeReportEntry,
   formatPaymentReportEntry,
@@ -31,9 +31,9 @@ export async function generateIncomeTaxReport(
   await pipeline(
     createReadStream(inputFile),
     csvParser,
-    new IncomeTaxReportTransformer({
-      separator: REPORT_SEPARATOR,
+    formatIncomeTaxReport({
       formatter: reportFormatterPerType[reportType],
+      separator: REPORT_SEPARATOR,
     }),
     createWriteStream(outputFile ?? `${reportType}-${Date.now()}.csv`)
   );

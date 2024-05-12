@@ -1,44 +1,35 @@
-import { Transform } from "node:stream";
-import { TransformCallback } from "stream";
+import { Readable } from "node:stream";
 import { convertFromEurToBrl } from "../currency/currency-converter.js";
 
-export class IncomeTaxReportTransformer extends Transform {
-  private csvSeparator: string;
-  private formatter: ReportFormatter;
+export function formatIncomeTaxReport({
+  formatter,
+  separator = ";",
+}: {
+  formatter: ReportFormatter;
+  separator?: string;
+}) {
+  return async function* (upstream: Readable) {
+    for await (const entry of upstream) {
+      const [dateString, description, ...amountFields]: [
+        string,
+        string,
+        ...number[],
+      ] = entry;
+      const date = new Date(dateString);
 
-  constructor({
-    separator,
-    formatter,
-  }: {
-    separator: string;
-    formatter: ReportFormatter;
-  }) {
-    super({ objectMode: true });
+      const convertedAmounts = await Promise.all(
+        amountFields.map(
+          async (amount) => await convertFromEurToBrl(amount, date)
+        )
+      );
 
-    this.csvSeparator = separator;
-    this.formatter = formatter;
-  }
+      const reportFields = formatter({
+        date,
+        description,
+        amounts: convertedAmounts,
+      });
 
-  async _transform(
-    entry: [string, string, ...number[]],
-    _: BufferEncoding,
-    done: TransformCallback
-  ): Promise<void> {
-    const [dateString, description, ...amountFields] = entry;
-    const date = new Date(dateString);
-
-    const convertedAmounts = await Promise.all(
-      amountFields.map(
-        async (amount) => await convertFromEurToBrl(amount, date)
-      )
-    );
-
-    const reportFields = this.formatter({
-      date,
-      description,
-      amounts: convertedAmounts,
-    });
-
-    done(null, `${reportFields.join(this.csvSeparator)}\n`);
-  }
+      yield `${reportFields.join(separator)}\n`;
+    }
+  };
 }
