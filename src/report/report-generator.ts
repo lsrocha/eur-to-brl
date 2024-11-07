@@ -14,7 +14,7 @@ export type ReportType = (typeof REPORT_TYPES)[number];
 export async function generateIncomeTaxReport(
   reportType: ReportType,
   inputFile: string,
-  outputFile?: string
+  outputFile?: string,
 ) {
   const csvParser = parse({
     cast: true,
@@ -35,6 +35,6 @@ export async function generateIncomeTaxReport(
       formatter: reportFormatterPerType[reportType],
       separator: REPORT_SEPARATOR,
     }),
-    createWriteStream(outputFile ?? `${reportType}-${Date.now()}.csv`)
+    createWriteStream(outputFile ?? `${reportType}-${Date.now()}.csv`),
   );
 }

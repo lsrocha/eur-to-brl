@@ -5,7 +5,7 @@ describe("quoteUsdToBrlExchangeRate function", () => {
   const date = new Date();
 
   const jsonFunctionMock = jest.fn(
-    async () => ({ value: [{ cotacaoCompra: 10 }] }) as unknown
+    async () => ({ value: [{ cotacaoCompra: 10 }] }) as unknown,
   );
 
   const fetchFunctionMock = jest.spyOn(global, "fetch").mockImplementation(
@@ -13,7 +13,7 @@ describe("quoteUsdToBrlExchangeRate function", () => {
       ({
         ok: true,
         json: jsonFunctionMock,
-      }) as unknown as Response
+      }) as unknown as Response,
   );
 
   it("should throw an exception when the API response is not an HTTP 200", async () => {

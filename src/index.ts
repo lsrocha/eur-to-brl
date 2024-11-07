@@ -9,7 +9,7 @@ import { DEFAULT_REPORT_TYPE, REPORT_TYPES } from "./report/constants.js";
 
 type CommandOptions = ParseArgsConfig["options"];
 type CommandExecutor = (
-  options: ReturnType<typeof parseArgs>["values"]
+  options: ReturnType<typeof parseArgs>["values"],
 ) => Promise<void>;
 
 type Command = {
@@ -41,7 +41,7 @@ const commands: {
         type: string;
         input: string;
         output: string;
-      }>
+      }>,
     ) => {
       if (!options.input) {
         throw new Error("-i, --input argument missing");
@@ -84,7 +84,7 @@ const commands: {
 
       const convertedAmount = await convertFromEurToBrl(
         parsedAmount,
-        parsedDate
+        parsedDate,
       );
 
       const formattedAmount = formatAmount(convertedAmount);
@@ -99,8 +99,8 @@ async function main() {
     options: Object.assign(
       {},
       ...Object.keys(commands).map(
-        (commandName) => commands[commandName].options
-      )
+        (commandName) => commands[commandName].options,
+      ),
     ),
     allowPositionals: true,
   });

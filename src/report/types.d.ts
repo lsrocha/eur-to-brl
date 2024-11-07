@@ -22,5 +22,5 @@ type InputFileEntry = {
 };
 
 type ReportFormatter = (
-  entry: InputFileEntry
+  entry: InputFileEntry,
 ) => IncomeReportEntry | PaymentReportEntry;
