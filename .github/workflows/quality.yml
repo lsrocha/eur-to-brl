@@ -6,26 +6,26 @@ name: Quality
 on:
   push:
     branches:
-      - "main"
+      - main
   pull_request:
     branches:
-      - "main"
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-    - run: corepack enable pnpm
-    - name: Install dependencies
-      run: pnpm install
-    - name: Build
-      run: pnpm build
-    - name: Quality
-      run: pnpm lint && pnpm format:check
-    - name: Test
-      run: pnpm test
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - run: corepack enable pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Quality
+        run: pnpm lint && pnpm format:check
+      - name: Test
+        run: pnpm test
