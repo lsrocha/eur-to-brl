@@ -1,34 +1,61 @@
-/**
- * @see https://www.anbima.com.br/feriados/feriados.asp
- */
-export const brazilianHolidays: { fixed: string[]; [key: number]: string[] } = {
-  fixed: [
-    "1-1", // Confraternização Universal
-    "4-21", // Tiradentes
-    "5-1", // Dia do trabalho
-    "9-7", // Independência do Brasil
-    "10-12", // Nossa Senhora Aparecida
-    "11-2", // Finados
-    "11-15", // Proclamação da república
-    "11-20", // Consciência Negra
-    "12-25", // Natal
-  ],
-  2022: [
-    "2-28", // Carnaval
-    "3-1", // Carnaval
-    "4-15", // Paixão de Cristo
-    "6-16", // Corpus Christi
-  ],
-  2023: [
-    "2-20", // Carnaval
-    "2-21", // Carnaval
-    "4-7", // Paixão de Cristo
-    "6-8", // Corpus Christi
-  ],
-  2024: [
-    "2-12", // Carnaval
-    "2-13", // Carnaval
-    "3-29", // Paixão de Cristo
-    "5-30", // Corpus Christi
-  ],
-};
+interface BrazilianHoliday {
+  diaMes: string;
+  diaSemana: string;
+  nomeFeriado: string;
+}
+
+type FebrabanHolidaysResponse = BrazilianHoliday[];
+
+export async function getBrazilianHolidays(year: number): Promise<string[]> {
+  // TODO: cache request
+
+  try {
+    const response = await fetch(
+      `https://feriadosbancarios.febraban.org.br/Home/ObterFeriadosFederais?ano=${year}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+    }
+
+    const holidays = (await response.json()) as FebrabanHolidaysResponse;
+
+    return holidays.map((holiday) =>
+      datePtBrToISO(`${holiday.diaMes} de ${year}`)
+    );
+  } catch (error) {
+    throw new Error(`Unable to retrieve the ${year} holidays`, {
+      cause: error,
+    });
+  }
+}
+
+export function datePtBrToISO(date: string) {
+  const months: { [key: string]: number } = {
+    janeiro: 1,
+    fevereiro: 2,
+    março: 3,
+    abril: 4,
+    maio: 5,
+    junho: 6,
+    julho: 7,
+    agosto: 8,
+    setembro: 9,
+    outubro: 10,
+    novembro: 11,
+    dezembro: 12,
+  };
+
+  const matches = date
+    .toLocaleLowerCase()
+    .match(/^(\d{1,2}) de ([a-zç]+) de (\d{4})$/);
+
+  if (matches === null || matches.length < 4) {
+    throw new Error("Invalid date provided");
+  }
+
+  const [, day, monthName, year] = matches;
+  const monthNumber = months[monthName];
+
+  return `${year}-${monthNumber.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+}

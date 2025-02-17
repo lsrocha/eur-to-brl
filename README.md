@@ -1,6 +1,6 @@
 # eur-to-brl
 
-`eur-to-brl` is a command-line (CLI) tool designed to assist users in converting Euro (EUR) amounts to Brazilian Real (BRL) using official exchange rates provided by the [Brazilain Central Bank](https://www.bcb.gov.br/en) and the [European Central Bank](https://www.ecb.europa.eu). The tool is particularly tailored for individuals and businesses preparing income reports in compliance with tax regulations defined by the [Brazilian Federal Revenue Service](https://www.gov.br/receitafederal/).
+`eur-to-brl` is a command-line (CLI) tool designed to assist users in converting Euro (EUR) amounts to Brazilian Real (BRL) using official exchange rates provided by the [Brazilian Central Bank](https://www.bcb.gov.br/en) and the [European Central Bank](https://www.ecb.europa.eu). The tool is particularly tailored for individuals and businesses preparing income reports in compliance with tax regulations defined by the [Brazilian Federal Revenue Service](https://www.gov.br/receitafederal/).
 
 > ⚠ **Disclaimer**: **This project is currently in the alpha stage** and may contain errors or incomplete functionality. **Ensure results are reviewed by a qualified fiscal advisor before using them for official income reports**.
 
@@ -51,7 +51,7 @@ Example:
 
 ```bash
 eur-to-brl single-amount \
-  --date "12/25/2023" \
+  --date "12/22/2023" \
   --amount "110.00"
 ```
 
