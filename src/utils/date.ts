@@ -1,4 +1,4 @@
-import { brazilianHolidays } from "./public-holidays.js";
+import { getBrazilianHolidays } from "./public-holidays.js";
 
 export function formatIsoDate(date: Date): string {
   const [isoDateString] = date.toISOString().split("T");
@@ -14,7 +14,9 @@ export function formatUsdDate(date: Date): string {
     .replace(/\//g, "-");
 }
 
-export function getLastBusinessDayOfPreviousMonthFirstHalf(date: Date): Date {
+export async function getLastBusinessDayOfPreviousMonthFirstHalf(
+  date: Date
+): Promise<Date> {
   const businessDate = new Date();
 
   businessDate.setUTCDate(15);
@@ -22,7 +24,10 @@ export function getLastBusinessDayOfPreviousMonthFirstHalf(date: Date): Date {
   businessDate.setUTCMonth(date.getUTCMonth() - 1);
   businessDate.setUTCHours(0, 0, 0, 0);
 
-  while (isWeekend(businessDate) || isPublicHolidayInBrazil(businessDate)) {
+  while (
+    isWeekend(businessDate) ||
+    (await isPublicHolidayInBrazil(businessDate))
+  ) {
     const subtrahend = businessDate.getUTCDay() === 0 ? 2 : 1;
     businessDate.setUTCDate(businessDate.getUTCDate() - subtrahend);
   }
@@ -30,14 +35,13 @@ export function getLastBusinessDayOfPreviousMonthFirstHalf(date: Date): Date {
   return businessDate;
 }
 
-export function isPublicHolidayInBrazil(date: Date): boolean {
-  const dateIndex = `${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+export async function isPublicHolidayInBrazil(date: Date): Promise<boolean> {
+  const isoDate = formatIsoDate(date);
   const year = date.getUTCFullYear();
 
-  return (
-    brazilianHolidays.fixed.includes(dateIndex) ||
-    brazilianHolidays[year]?.includes(dateIndex)
-  );
+  const holidays = await getBrazilianHolidays(year);
+
+  return holidays.includes(isoDate);
 }
 
 export function isWeekend(date: Date): boolean {

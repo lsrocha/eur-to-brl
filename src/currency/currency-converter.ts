@@ -10,7 +10,7 @@ export async function convertFromEurToBrl(
     return amount;
   }
 
-  const businessDate = getLastBusinessDayOfPreviousMonthFirstHalf(date);
+  const businessDate = await getLastBusinessDayOfPreviousMonthFirstHalf(date);
 
   const [usdExchangeRate, brlExchangeRate] = await Promise.all([
     quoteFromEuropeanCentralBank({

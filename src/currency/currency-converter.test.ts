@@ -11,6 +11,10 @@ jest.unstable_mockModule("./european-central-bank/client.js", () => ({
   quoteFromEuropeanCentralBank: quoteFromEuropeanCentralBankMock,
 }));
 
+jest.unstable_mockModule("../utils/public-holidays.js", () => ({
+  getBrazilianHolidays: jest.fn(async () => []),
+}));
+
 const { convertFromEurToBrl } = await import("./currency-converter.js");
 
 describe("convertFromEurToBrl function", () => {
