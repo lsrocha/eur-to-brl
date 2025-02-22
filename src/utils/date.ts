@@ -36,7 +36,7 @@ export function isPublicHolidayInBrazil(date: Date): boolean {
 
   return (
     brazilianHolidays.fixed.includes(dateIndex) ||
-    brazilianHolidays?.[year].includes(dateIndex)
+    brazilianHolidays[year]?.includes(dateIndex)
   );
 }
 
