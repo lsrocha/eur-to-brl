@@ -11,7 +11,7 @@ export async function getBrazilianHolidays(year: number): Promise<string[]> {
 
   try {
     const response = await fetch(
-      `https://feriadosbancarios.febraban.org.br/Home/ObterFeriadosFederais?ano=${year}`
+      `https://feriadosbancarios.febraban.org.br/Home/ObterFeriadosFederais?ano=${year}`,
     );
 
     if (!response.ok) {
@@ -21,7 +21,7 @@ export async function getBrazilianHolidays(year: number): Promise<string[]> {
     const holidays = (await response.json()) as FebrabanHolidaysResponse;
 
     return holidays.map((holiday) =>
-      datePtBrToISO(`${holiday.diaMes} de ${year}`)
+      datePtBrToISO(`${holiday.diaMes} de ${year}`),
     );
   } catch (error) {
     throw new Error(`Unable to retrieve the ${year} holidays`, {

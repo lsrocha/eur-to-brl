@@ -15,7 +15,7 @@ export function formatUsdDate(date: Date): string {
 }
 
 export async function getLastBusinessDayOfPreviousMonthFirstHalf(
-  date: Date
+  date: Date,
 ): Promise<Date> {
   const businessDate = new Date();
 
