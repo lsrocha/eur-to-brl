@@ -18,3 +18,10 @@ updates:
         update-types:
           - "minor"
           - "patch"
+      jest-major:
+        applies-to: version-updates
+        update-types:
+          - "major"
+        patterns:
+          - "@jest/*"
+          - "jest"
