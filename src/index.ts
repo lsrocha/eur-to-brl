@@ -1,15 +1,15 @@
-import { ParseArgsConfig, parseArgs } from "node:util";
+import { type ParseArgsConfig, parseArgs } from "node:util";
 import {
   generateIncomeTaxReport,
   type ReportType,
-} from "./report/report-generator.js";
-import { convertFromEurToBrl } from "./currency/currency-converter.js";
-import { formatAmount } from "./report/formatters.js";
-import { DEFAULT_REPORT_TYPE, REPORT_TYPES } from "./report/constants.js";
+} from "./report/report-generator.ts";
+import { convertFromEurToBrl } from "./currency/currency-converter.ts";
+import { formatAmount } from "./report/formatters.ts";
+import { DEFAULT_REPORT_TYPE, REPORT_TYPES } from "./report/constants.ts";
 
 type CommandOptions = ParseArgsConfig["options"];
 type CommandExecutor = (
-  options: ReturnType<typeof parseArgs>["values"],
+  options: ReturnType<typeof parseArgs>["values"]
 ) => Promise<void>;
 
 type Command = {
@@ -41,7 +41,7 @@ const commands: {
         type: string;
         input: string;
         output: string;
-      }>,
+      }>
     ) => {
       if (!options.input) {
         throw new Error("-i, --input argument missing");
@@ -84,7 +84,7 @@ const commands: {
 
       const convertedAmount = await convertFromEurToBrl(
         parsedAmount,
-        parsedDate,
+        parsedDate
       );
 
       const formattedAmount = formatAmount(convertedAmount);
@@ -99,8 +99,8 @@ async function main() {
     options: Object.assign(
       {},
       ...Object.keys(commands).map(
-        (commandName) => commands[commandName].options,
-      ),
+        (commandName) => commands[commandName].options
+      )
     ),
     allowPositionals: true,
   });

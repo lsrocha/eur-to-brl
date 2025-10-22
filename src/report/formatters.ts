@@ -8,7 +8,7 @@ import {
   OTHER_INCOME_CODE,
   REPORT_LOCALE,
   TAX_PAID_ABROAD_PAYMENT_CODE,
-} from "./constants.js";
+} from "./constants.ts";
 
 export function formatAmount(amount: number) {
   return amount.toLocaleString(REPORT_LOCALE, {

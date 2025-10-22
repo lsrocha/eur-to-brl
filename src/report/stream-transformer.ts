@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import { convertFromEurToBrl } from "../currency/currency-converter.js";
+import { convertFromEurToBrl } from "../currency/currency-converter.ts";
 
 export function formatIncomeTaxReport({
   formatter,
@@ -19,8 +19,8 @@ export function formatIncomeTaxReport({
 
       const convertedAmounts = await Promise.all(
         amountFields.map(
-          async (amount) => await convertFromEurToBrl(amount, date),
-        ),
+          async (amount) => await convertFromEurToBrl(amount, date)
+        )
       );
 
       const reportFields = formatter({

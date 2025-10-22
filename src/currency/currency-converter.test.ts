@@ -3,19 +3,19 @@ import { describe, expect, it, jest } from "@jest/globals";
 const quoteFromEuropeanCentralBankMock = jest.fn();
 const quoteUsdToBrlExchangeRateMock = jest.fn();
 
-jest.unstable_mockModule("./brazilian-central-bank/client.js", () => ({
+jest.unstable_mockModule("./brazilian-central-bank/client.ts", () => ({
   quoteUsdToBrlExchangeRate: quoteUsdToBrlExchangeRateMock,
 }));
 
-jest.unstable_mockModule("./european-central-bank/client.js", () => ({
+jest.unstable_mockModule("./european-central-bank/client.ts", () => ({
   quoteFromEuropeanCentralBank: quoteFromEuropeanCentralBankMock,
 }));
 
-jest.unstable_mockModule("../utils/public-holidays.js", () => ({
+jest.unstable_mockModule("../utils/public-holidays.ts", () => ({
   getBrazilianHolidays: jest.fn(async () => []),
 }));
 
-const { convertFromEurToBrl } = await import("./currency-converter.js");
+const { convertFromEurToBrl } = await import("./currency-converter.ts");
 
 describe("convertFromEurToBrl function", () => {
   const date = new Date();

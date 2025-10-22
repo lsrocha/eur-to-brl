@@ -1,10 +1,10 @@
-import { quoteUsdToBrlExchangeRate } from "./brazilian-central-bank/client.js";
-import { quoteFromEuropeanCentralBank } from "./european-central-bank/client.js";
-import { getLastBusinessDayOfPreviousMonthFirstHalf } from "../utils/date.js";
+import { quoteUsdToBrlExchangeRate } from "./brazilian-central-bank/client.ts";
+import { quoteFromEuropeanCentralBank } from "./european-central-bank/client.ts";
+import { getLastBusinessDayOfPreviousMonthFirstHalf } from "../utils/date.ts";
 
 export async function convertFromEurToBrl(
   amount: number,
-  date: Date,
+  date: Date
 ): Promise<number> {
   if (amount === 0) {
     return amount;

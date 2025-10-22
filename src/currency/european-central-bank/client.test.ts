@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { quoteFromEuropeanCentralBank } from "./client.js";
+import { quoteFromEuropeanCentralBank } from "./client.ts";
 
 describe("quoteFromEuropeanCentralBank function", () => {
   const date = new Date();
@@ -26,7 +26,7 @@ describe("quoteFromEuropeanCentralBank function", () => {
         ok: true,
         headers: headersMock,
         json: jsonFunctionMock,
-      }) as unknown as Response,
+      }) as unknown as Response
   );
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe("quoteFromEuropeanCentralBank function", () => {
         date,
         baseCurrency: "EUR",
         targetCurrency: "USD",
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -53,7 +53,7 @@ describe("quoteFromEuropeanCentralBank function", () => {
         date,
         baseCurrency: "EUR",
         targetCurrency: "USD",
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -63,7 +63,7 @@ describe("quoteFromEuropeanCentralBank function", () => {
         date,
         baseCurrency: "EUR",
         targetCurrency: "USD",
-      }),
+      })
     ).resolves.toBe(10);
   });
 });

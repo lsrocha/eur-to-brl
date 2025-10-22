@@ -1,4 +1,4 @@
-import { getBrazilianHolidays } from "./public-holidays.js";
+import { getBrazilianHolidays } from "./public-holidays.ts";
 
 export function formatIsoDate(date: Date): string {
   const [isoDateString] = date.toISOString().split("T");
@@ -15,7 +15,7 @@ export function formatUsdDate(date: Date): string {
 }
 
 export async function getLastBusinessDayOfPreviousMonthFirstHalf(
-  date: Date,
+  date: Date
 ): Promise<Date> {
   const businessDate = new Date();
 

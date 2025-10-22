@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
-import { datePtBrToISO } from "./public-holidays.js";
+import { datePtBrToISO } from "./public-holidays.ts";
 
 describe("datePtBrToISO function", () => {
   it("should return '01' as the numeric representation of 'janeiro'", () => {

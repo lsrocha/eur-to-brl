@@ -1,5 +1,5 @@
 import { URL } from "node:url";
-import { formatUsdDate } from "../../utils/date.js";
+import { formatUsdDate } from "../../utils/date.ts";
 
 /**
  * Brazilian Central Bank HTTP client

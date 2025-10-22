@@ -1,5 +1,5 @@
 import { URL } from "node:url";
-import { formatIsoDate } from "../../utils/date.js";
+import { formatIsoDate } from "../../utils/date.ts";
 
 /**
  * European Central Bank HTTP client
@@ -18,14 +18,14 @@ const AVERAGE_SERIES_VARIATION = "A";
 function buildRequest(
   baseCurrency: CurrencyCode,
   targetCurrency: CurrencyCode,
-  date: Date,
+  date: Date
 ): URL {
   const isoDateString = formatIsoDate(date);
   const dimensions = buildRequestDimensions(baseCurrency, targetCurrency);
 
   const url = new URL(
     `service/data/${EXCHANGE_RATE_DATASET_ID}/${dimensions}`,
-    BASE_URL,
+    BASE_URL
   );
 
   url.searchParams.set("format", "jsondata");
@@ -38,7 +38,7 @@ function buildRequest(
 
 function buildRequestDimensions(
   baseCurrency: CurrencyCode,
-  targetCurrency: CurrencyCode,
+  targetCurrency: CurrencyCode
 ): string {
   return [
     DAILY_FREQUENCY, // Frequency dimension

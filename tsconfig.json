@@ -2,6 +2,8 @@
   "extends": "@tsconfig/node22",
   "compilerOptions": {
     "outDir": "dist",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   }
 }
