@@ -1,12 +1,13 @@
+import { createDefaultEsmPreset } from "ts-jest";
+
+const preset = createDefaultEsmPreset({
+  tsconfig: "tsconfig.json",
+});
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
-  preset: "ts-jest/presets/default-esm",
-  testEnvironment: "node",
-  roots: ["<rootDir>/src/"],
+  ...preset,
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
-  },
-  transform: {
-    "^.+\\.ts$": ["ts-jest", { useESM: true }],
   },
 };
