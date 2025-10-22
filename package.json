@@ -15,19 +15,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
+  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8",
   "type": "module",
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@jest/globals": "^30.2.0",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.18.8",
-    "eslint": "^9.37.0",
+    "@types/node": "^22.18.11",
+    "eslint": "^9.38.0",
     "jest": "^30.2.0",
     "prettier": "^3.6.2",
-    "ts-jest": "^29.4.4",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.9.3",
-    "typescript-eslint": "8.46.0"
+    "typescript-eslint": "8.46.2"
   },
   "dependencies": {
     "csv-parse": "^6.1.0"
