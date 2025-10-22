@@ -19,8 +19,8 @@ export function formatIncomeTaxReport({
 
       const convertedAmounts = await Promise.all(
         amountFields.map(
-          async (amount) => await convertFromEurToBrl(amount, date)
-        )
+          async (amount) => await convertFromEurToBrl(amount, date),
+        ),
       );
 
       const reportFields = formatter({

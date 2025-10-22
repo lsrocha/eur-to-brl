@@ -4,7 +4,7 @@ import { getLastBusinessDayOfPreviousMonthFirstHalf } from "../utils/date.ts";
 
 export async function convertFromEurToBrl(
   amount: number,
-  date: Date
+  date: Date,
 ): Promise<number> {
   if (amount === 0) {
     return amount;
