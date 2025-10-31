@@ -1,32 +1,28 @@
 interface BrazilianHoliday {
-  diaMes: string;
-  diaSemana: string;
-  nomeFeriado: string;
+  diaMes: string
+  diaSemana: string
+  nomeFeriado: string
 }
 
-type FebrabanHolidaysResponse = BrazilianHoliday[];
+type FebrabanHolidaysResponse = BrazilianHoliday[]
 
 export async function getBrazilianHolidays(year: number): Promise<string[]> {
   // TODO: cache request
 
   try {
-    const response = await fetch(
-      `https://feriadosbancarios.febraban.org.br/Home/ObterFeriadosFederais?ano=${year}`,
-    );
+    const response = await fetch(`https://feriadosbancarios.febraban.org.br/Home/ObterFeriadosFederais?ano=${year}`)
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+      throw new Error(`HTTP ${response.status} - ${response.statusText}`)
     }
 
-    const holidays = (await response.json()) as FebrabanHolidaysResponse;
+    const holidays = (await response.json()) as FebrabanHolidaysResponse
 
-    return holidays.map((holiday) =>
-      datePtBrToISO(`${holiday.diaMes} de ${year}`),
-    );
+    return holidays.map((holiday) => datePtBrToISO(`${holiday.diaMes} de ${year}`))
   } catch (error) {
     throw new Error(`Unable to retrieve the ${year} holidays`, {
       cause: error,
-    });
+    })
   }
 }
 
@@ -44,18 +40,16 @@ export function datePtBrToISO(date: string) {
     outubro: 10,
     novembro: 11,
     dezembro: 12,
-  };
-
-  const matches = date
-    .toLocaleLowerCase()
-    .match(/^(\d{1,2}) de ([a-zç]+) de (\d{4})$/);
-
-  if (matches === null || matches.length < 4) {
-    throw new Error("Invalid date provided");
   }
 
-  const [, day, monthName, year] = matches;
-  const monthNumber = months[monthName];
+  const matches = date.toLocaleLowerCase().match(/^(\d{1,2}) de ([a-zç]+) de (\d{4})$/)
 
-  return `${year}-${monthNumber.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  if (matches === null || matches.length < 4) {
+    throw new Error('Invalid date provided')
+  }
+
+  const [, day, monthName, year] = matches
+  const monthNumber = months[monthName]
+
+  return `${year}-${monthNumber.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 }

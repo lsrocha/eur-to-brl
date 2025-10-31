@@ -15,11 +15,9 @@
 The tool applies a two-step process to convert amounts from EUR to BRL, following the rules below:
 
 1. **EUR to USD Conversion**
-
    - The Euro amount is first converted to USD using the exchange rate provided by the European Central Bank for the specified event date.
 
 2. **USD to BRL Conversion**
-
    - The USD amount is then converted to BRL using the bid rate published by the Brazilian Central Bank.
 
    - The exchange rate used corresponds to the last business day of the first half of the month before the specified event date.

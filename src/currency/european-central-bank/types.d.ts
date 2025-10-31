@@ -1,15 +1,15 @@
-type CurrencyCode = "USD" | "EUR" | "BRL";
+type CurrencyCode = 'USD' | 'EUR' | 'BRL'
 
-type QuotationObservation = number;
+type QuotationObservation = number
 
 interface QuotationDataSet {
-  series: Record<string, QuotationSerie>;
+  series: Record<string, QuotationSerie>
 }
 
 interface QuotationSerie {
-  observations: Record<string, QuotationObservation[]>;
+  observations: Record<string, QuotationObservation[]>
 }
 
 interface EuropeanCentralBankResponse {
-  dataSets: QuotationDataSet[];
+  dataSets: QuotationDataSet[]
 }

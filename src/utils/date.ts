@@ -1,49 +1,44 @@
-import { getBrazilianHolidays } from "./public-holidays.ts";
+import { getBrazilianHolidays } from './public-holidays.ts'
 
 export function formatIsoDate(date: Date): string {
-  const [isoDateString] = date.toISOString().split("T");
+  const [isoDateString] = date.toISOString().split('T')
 
-  return isoDateString;
+  return isoDateString
 }
 
 export function formatUsdDate(date: Date): string {
   return date
-    .toLocaleDateString("en-US", {
-      timeZone: "UTC",
+    .toLocaleDateString('en-US', {
+      timeZone: 'UTC',
     })
-    .replace(/\//g, "-");
+    .replace(/\//g, '-')
 }
 
-export async function getLastBusinessDayOfPreviousMonthFirstHalf(
-  date: Date,
-): Promise<Date> {
-  const businessDate = new Date();
+export async function getLastBusinessDayOfPreviousMonthFirstHalf(date: Date): Promise<Date> {
+  const businessDate = new Date()
 
-  businessDate.setUTCDate(15);
-  businessDate.setUTCFullYear(date.getUTCFullYear());
-  businessDate.setUTCMonth(date.getUTCMonth() - 1);
-  businessDate.setUTCHours(0, 0, 0, 0);
+  businessDate.setUTCDate(15)
+  businessDate.setUTCFullYear(date.getUTCFullYear())
+  businessDate.setUTCMonth(date.getUTCMonth() - 1)
+  businessDate.setUTCHours(0, 0, 0, 0)
 
-  while (
-    isWeekend(businessDate) ||
-    (await isPublicHolidayInBrazil(businessDate))
-  ) {
-    const subtrahend = businessDate.getUTCDay() === 0 ? 2 : 1;
-    businessDate.setUTCDate(businessDate.getUTCDate() - subtrahend);
+  while (isWeekend(businessDate) || (await isPublicHolidayInBrazil(businessDate))) {
+    const subtrahend = businessDate.getUTCDay() === 0 ? 2 : 1
+    businessDate.setUTCDate(businessDate.getUTCDate() - subtrahend)
   }
 
-  return businessDate;
+  return businessDate
 }
 
 export async function isPublicHolidayInBrazil(date: Date): Promise<boolean> {
-  const isoDate = formatIsoDate(date);
-  const year = date.getUTCFullYear();
+  const isoDate = formatIsoDate(date)
+  const year = date.getUTCFullYear()
 
-  const holidays = await getBrazilianHolidays(year);
+  const holidays = await getBrazilianHolidays(year)
 
-  return holidays.includes(isoDate);
+  return holidays.includes(isoDate)
 }
 
 export function isWeekend(date: Date): boolean {
-  return [0, 6].includes(date.getUTCDay());
+  return [0, 6].includes(date.getUTCDay())
 }

@@ -5,23 +5,23 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     ignore:
-      - dependency-name: "@types/node"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
       minor-and-patch:
         applies-to: version-updates
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       jest-major:
         applies-to: version-updates
         update-types:
-          - "major"
+          - 'major'
         patterns:
-          - "@jest/*"
-          - "jest"
+          - '@jest/*'
+          - 'jest'

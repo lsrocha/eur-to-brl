@@ -1,7 +1,7 @@
 interface BrazilianCentralBankQuote {
-  cotacaoCompra: number;
+  cotacaoCompra: number
 }
 
 interface BrazilianCentralBankResponse {
-  value: BrazilianCentralBankQuote[];
+  value: BrazilianCentralBankQuote[]
 }
