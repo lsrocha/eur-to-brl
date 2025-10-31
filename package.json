@@ -4,10 +4,11 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
+    "_prettier": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-strip-types\" pnpm exec prettier",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "format": "prettier src --write",
-    "format:check": "prettier src --check",
+    "format": "pnpm run _prettier . --write",
+    "format:check": "pnpm run _prettier . --check",
     "lint": "eslint src",
     "lint:fix": "eslit src --fix",
     "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" pnpm exec jest"
