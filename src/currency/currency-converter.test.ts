@@ -21,7 +21,7 @@ describe('convertFromEurToBrl function', () => {
   const date = new Date()
 
   it('should resolve to 0 when the given amount is 0', async () => {
-    expect(convertFromEurToBrl(0, date)).resolves.toBe(0)
+    await expect(convertFromEurToBrl(0, date)).resolves.toBe(0)
   })
 
   it('should throw an exception when the response from Brazilian Central Bank is not HTTP 200', async () => {
@@ -29,7 +29,7 @@ describe('convertFromEurToBrl function', () => {
       throw new Error('HTTP request error')
     })
 
-    expect(convertFromEurToBrl(10, date)).rejects.toThrow()
+    await expect(convertFromEurToBrl(10, date)).rejects.toThrow()
   })
 
   it('should throw an exception when the response from European Central Bank is not HTTP 200', async () => {
@@ -37,21 +37,13 @@ describe('convertFromEurToBrl function', () => {
       throw new Error('HTTP request error')
     })
 
-    expect(convertFromEurToBrl(10, date)).rejects.toThrow()
-  })
-
-  it('should throw an exception when the response from European Central Bank is not HTTP 200', async () => {
-    quoteFromEuropeanCentralBankMock.mockImplementationOnce(async () => {
-      throw new Error('HTTP request error')
-    })
-
-    expect(convertFromEurToBrl(10, date)).rejects.toThrow()
+    await expect(convertFromEurToBrl(10, date)).rejects.toThrow()
   })
 
   it('should resolve to the converted amount when the currency quotations are successfully retrieved', async () => {
     quoteUsdToBrlExchangeRateMock.mockImplementationOnce(async () => 5)
     quoteFromEuropeanCentralBankMock.mockImplementationOnce(async () => 1)
 
-    expect(convertFromEurToBrl(10, date)).resolves.toBe(50)
+    await expect(convertFromEurToBrl(10, date)).resolves.toBe(50)
   })
 })

@@ -36,7 +36,7 @@ describe('quoteFromEuropeanCentralBank function', () => {
   it('should throw an exception when the API response is not an HTTP 200', async () => {
     fetchFunctionMock.mockResolvedValueOnce({ ok: false } as Response)
 
-    expect(
+    await expect(
       quoteFromEuropeanCentralBank({
         date,
         baseCurrency: 'EUR',
@@ -48,7 +48,7 @@ describe('quoteFromEuropeanCentralBank function', () => {
   it('should throw an exception when the API response has length 0', async () => {
     headersMock.set('content-length', '0')
 
-    expect(
+    await expect(
       quoteFromEuropeanCentralBank({
         date,
         baseCurrency: 'EUR',
@@ -58,7 +58,7 @@ describe('quoteFromEuropeanCentralBank function', () => {
   })
 
   it('should resolve to a number when the API responds successfully', async () => {
-    expect(
+    await expect(
       quoteFromEuropeanCentralBank({
         date,
         baseCurrency: 'EUR',
